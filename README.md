@@ -2465,10 +2465,49 @@ no parameters.
 
     private
 
-    def some_private_method
+    def _some_private_method
     end
   end
   ```
+
+* <a name="private-method-prefix"></a>
+  Prefix private method names with an underscore character (`_`). Don't prefix
+  protected method names.
+<sup>[[link](#private-method-prefix)]</sup>
+    ```Ruby
+    # bad
+    class SomeClass
+
+      protected
+
+      def _some_protected_method
+        # body omitted
+      end
+
+      private
+
+      def some_private_method
+        # body omitted
+      end
+    end
+
+    # good
+    class SomeClass
+
+      protected
+
+      def some_protected_method
+        # body omitted
+      end
+
+      private
+
+      def _some_private_method
+        # body omitted
+      end
+    end
+    ```
+
 
 * <a name="file-classes"></a>
   Don't nest multi-line classes within classes. Try to have such nested
@@ -2822,11 +2861,11 @@ no parameters.
 
     private
 
-    def private_method
+    def _private_method
       # some code
     end
 
-    def another_private_method
+    def _another_private_method
       # some code
     end
   end
@@ -3868,7 +3907,7 @@ resource cleanup when possible.
   ```
 
 * <a name="percent-q"></a>
-  Avoid %() or the equivlant %q() unless you have a string with both `'` and 
+  Avoid %() or the equivlant %q() unless you have a string with both `'` and
   `"` in it. Regular string literals are more readable and should be preferred
   unless a lot of characters would have to be escaped in them.
 <sup>[[link](#percent-q)]</sup>
@@ -3920,14 +3959,14 @@ resource cleanup when possible.
 <sup>[[link](#percent-s)]</sup>
 
 * <a name="percent-literal-braces"></a>
-  Use the braces that are the most appropriate for the various kinds of percent 
+  Use the braces that are the most appropriate for the various kinds of percent
   literals.
   <sup>[[link](#percent-literal-braces)]</sup>
   - `()` for string literals(`%q`, `%Q`).
-  - `[]` for array literals(`%w`, `%i`, `%W`, `%I`) as it is aligned with 
+  - `[]` for array literals(`%w`, `%i`, `%W`, `%I`) as it is aligned with
   the standard array literals.
-  - `{}` for regexp literals(`%r`) since parentheses often appear inside regular 
-  expressions. That's why a less common character with `{` is usually the best 
+  - `{}` for regexp literals(`%r`) since parentheses often appear inside regular
+  expressions. That's why a less common character with `{` is usually the best
   delimiter for `%r` literals.
   - `()` for all other literals (e.g. `%s`, `%x`)
 
@@ -3945,7 +3984,7 @@ resource cleanup when possible.
   # good
   %w[one two three]
   %i[one two three]
-  
+
   # bad
   %r((\w+)-(\d+))
   %r{\w{1,2}\d{2,5}}
@@ -4054,15 +4093,15 @@ resource cleanup when possible.
 
     private
 
-    def reset_token
+    def _reset_token
       # some code
     end
 
-    def create_token
+    def _create_token
       # some code
     end
 
-    def activate!
+    def _activate!
       # some code
     end
   end
