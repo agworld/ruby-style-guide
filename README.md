@@ -4191,6 +4191,54 @@ resource cleanup when possible.
   Do not mutate parameters unless that is the purpose of the method.
 <sup>[[link](#no-param-mutations)]</sup>
 
+  ```Ruby
+  # bad
+  def find_max(list)
+    list.sort!
+    list[-1]
+  end
+
+  # good (well apart from performance of sorting a whole list just to get the max...)
+  def find_max(list)
+    list.sort[-1]
+  end
+  ```
+
+* <a name="only-owned-mutations"></a>
+  Do not mutate objects that are not directly instantiated or 'owned by' the mutating code.
+<sup>[[link](#only-owned-mutations)]</sup>
+
+  ```Ruby
+  # bad (Mutates the default. This code doesn't own the default config.)
+  def recipients
+    CX.setting.default_disclaimer.tap do |disclaimer|
+      disclaimer << "\n#{Time.now.year}"
+      disclaimer << "\n#{CX.deploy.region} " if CX.setting.show_region_in_disclaimer
+    end
+  end
+
+  # good
+  def recipients
+    [].tap do |disclaimer|
+      disclaimer << CX.setting.default_disclaimer
+      disclaimer << "\n#{Time.now.year}"
+      disclaimer << "\n#{CX.deploy.region} " if CX.setting.show_region_in_disclaimer
+    end
+  end
+
+  # bad (Mutating a string that comes from 'elsewhere', who knows what other code relies on that name)
+  def current_user_button_text
+    name = User.current_user.name
+    name.upcase!
+    "[#{upper_name}]"
+  end
+
+  # good (Just avoid mutating methods when non-mutating versions exist).
+  def current_user_button_text
+    "[#{User.current_user.name.upcase}]"
+  end
+  ```
+
 * <a name="three-is-the-number-thou-shalt-count"></a>
   Avoid more than three levels of block nesting.
 <sup>[[link](#three-is-the-number-thou-shalt-count)]</sup>
