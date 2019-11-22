@@ -4864,6 +4864,51 @@ Use `OptionParser` for parsing complex command line options and `ruby -s` for tr
 
 Do not mutate parameters unless that is the purpose of the method.
 
+[source,ruby]
+----
+# bad
+def find_max(list)
+  list.sort!
+  list[-1]
+end
+
+# good (well apart from performance of sorting a whole list just to get the max...)
+def find_max(list)
+  list.sort[-1]
+end
+----
+
+=== Only mutate owned objects [[only-owned-mutations]]
+
+Do not mutate objects that are not directly instantiated or 'owned by' the mutating code.
+
+[source,ruby]
+----
+# bad (Mutates the default. This code doesn't own the default config.)
+def recipients
+  CX.setting.default_disclaimer.tap do |disclaimer|
+    disclaimer << "\n#{Time.now.year}"
+    disclaimer << "\n#{CX.deploy.region} " if CX.setting.show_region_in_disclaimer
+  end
+end
+
+# good
+def recipients
+  [].tap do |disclaimer|
+    disclaimer << CX.setting.default_disclaimer
+    disclaimer << "\n#{Time.now.year}"
+    disclaimer << "\n#{CX.deploy.region} " if CX.setting.show_region_in_disclaimer
+  end
+end
+
+# bad (Mutating a string that comes from 'elsewhere', who knows what other code relies on that name)
+def current_user_button_text
+  name = User.current_user.name
+  name.upcase!
+  "[#{upper_name}]"
+end
+----
+
 === Three is the Number Thou Shalt Count [[three-is-the-number-thou-shalt-count]]
 
 Avoid more than three levels of block nesting.
