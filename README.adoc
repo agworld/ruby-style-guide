@@ -2657,9 +2657,48 @@ class Person
 
   private
 
-  def some_private_method
+  def _some_private_method
   end
 end
+----
+
+=== Private Method Name Prefix [[private-method-prefix]]
+
+Prefix private method names with an underscore character (`_`). Don't prefix protected method names.
+
+[source,ruby]
+----
+  # bad
+  class SomeClass
+
+    protected
+
+    def _some_protected_method
+      # body omitted
+    end
+
+    private
+
+    def some_private_method
+      # body omitted
+    end
+  end
+
+  # good
+  class SomeClass
+
+    protected
+
+    def some_protected_method
+      # body omitted
+    end
+
+    private
+
+    def _some_private_method
+      # body omitted
+    end
+  end
 ----
 
 === Mixin Grouping [[mixin-grouping]]
@@ -3074,11 +3113,11 @@ class SomeClass
 
   private
 
-  def private_method
+  def _private_method
     # some code
   end
 
-  def another_private_method
+  def _another_private_method
     # some code
   end
 end
@@ -4562,15 +4601,15 @@ module Activatable
 
   private
 
-  def reset_token
+  def _reset_token
     # some code
   end
 
-  def create_token
+  def _create_token
     # some code
   end
 
-  def activate!
+  def _activate!
     # some code
   end
 end
