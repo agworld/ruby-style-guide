@@ -3930,24 +3930,23 @@ email_with_name = format('%s <%s>', user.name, user.email)
 
 Adopt a consistent string literal quoting style.
 There are two popular styles in the Ruby community, both of which are considered good - single quotes by default and double quotes by default.
-Agworld uses the former, single quoted strings by default.
+Agworld uses the latter, **double** quoted strings by default.
 
 NOTE: The string literals in this guide are using single quotes by default.
 
-==== Single Quote [[consistent-string-literals-single-quote]]
+==== Double Quote [[consistent-string-literals-double-quote]]
 
-Prefer single-quoted strings when you don't need string interpolation or special symbols such as `\t`, `\n`, `'`, etc.
+Prefer double-quoted strings unless you need single quotes to avoid extra backslashes for escaping.
 
 [source,ruby]
 ----
 # bad
-name = "Bozhidar"
-name = 'De\'Andre'
+name = 'Bozhidar'
+sarcasm = "I \"like\" it."
 
 # good
-name = 'Bozhidar'
-name = "De'Andre"
-name = "#{first_name} #{last_name}"
+name = "Bozhidar"
+sarcasm = 'I "like" it.'
 ----
 
 === No Character Literals [[no-character-literals]]
